@@ -1,0 +1,36 @@
+
+package { 'nfs-kernel-server':
+  ensure  => latest,
+  require  => Exec['apt update'],
+}
+
+package { 'nfs-common':
+  ensure  => latest,
+  require  => Exec['apt update'],
+}
+
+file {'/mnt/k8s_nfs_share/':
+   ensure  => directory,
+   mode    => 777,
+   owner   => 'nobody',
+   group   => 'nogroup',
+}
+
+exec {'exports':
+  command => "sudo echo '/mnt/k8s_nfs_share  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
+}
+
+service {'nfs-kernel-server':
+  ensure => running,
+  enable  => true,
+  require => Package['nfs-kernel-server'],
+}
+
+include simp-iptables
+
+iptables::listen::all {'nfs':
+  trusted_nets => ["${microk8s::ipv4_address_cidr}"],
+  dports      => [ 2049 ]
+}
+
+

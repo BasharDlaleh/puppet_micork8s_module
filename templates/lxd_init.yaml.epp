@@ -2,7 +2,7 @@ networks:
 - name: lxdbr0
   type: bridge
   config:
-    ipv4.address: <%= ipv4_address %>
+    ipv4.address: <%= $ipv4_address_cidr %>
     ipv6.address: auto
 
 storage_pools:

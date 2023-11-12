@@ -1,0 +1,59 @@
+# microk8s::instance
+#
+# A description of what this class does
+#
+# @summary A class for creatinf LXD instances
+#
+# @example
+#  class {'microk8s::instance':
+#    [{
+#      vm_name      => 'master',
+#      ipv4_address => '10.0.0.1',
+#      memory       => '8GB',
+#      disk         => '60GiB',
+#      passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+#      master       => true
+#    },
+#    {
+#      vm_name      => 'worker1',
+#      ipv4_address => '10.0.0.2',
+#      memory       => '8GB',
+#      disk         => '60GiB',
+#      passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+#      master       => false
+#    }]
+#  }
+
+class microk8s::instances (
+  $nodes = [],
+){
+  include stdlib
+
+  stage { 'master':
+    before => Stage['main'],
+  }
+  stage { 'last': }
+  Stage['main'] -> Stage['last']
+
+  $nodes.each |$node| {
+    if $node[master] == true {
+      $node[stage] = 'master'
+      $master_ip   = $node[ipv4_address]
+    }
+    else {
+      $node[stage] = 'worker'
+    }
+  }
+
+  $nodes.each |$node| {
+    class {'microk8s::vm':
+        vm_name      => $node[vm_name],
+        ipv4_address => $node[ipv4_address],
+        memory       => $node[memory],
+        disk         => $node[disk],
+        passwd       => $node[passwd],
+        master       => $node[master],
+        stage        => $node[stage],
+    }
+  }
+}

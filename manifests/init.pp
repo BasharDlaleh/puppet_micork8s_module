@@ -4,15 +4,26 @@
 #
 # @example
 #   include microk8s
-class microk8s {
-  exec {'init':
-    command => "lxd init --preseed < ${epp('microk8s/init.yml.epp',{
-        ipv4_address => $ipv4_address,
-      })}"
+class microk8s (
+  $ipv4_address_cidr = '10.206.32.1/24',
+  $local_nfs_storage = false,
+){
+
+  file {'/tmp/lxd_init.yaml':
+    ensure  => file,
+    content => epp('microk8s/lxd_init.yml.epp',{
+        ipv4_address_cidr => $ipv4_address_cidr,
+    }),
   }
 
-  file {'/tmp/master_profile.yaml':
-    ensure  => file,
-    content => 
+  exec {'init':
+    command => 'lxd init --preseed < /tmp/lxd_init.yaml'
+    require => File['/tmp/lxd_init.yaml']
+  }
+  
+  class {'microk8s::host':
+    master_ip         => $master_ip,
+    local_nfs_storage => $local_nfs_storage,
+    stage             => 'last'
   }
 }

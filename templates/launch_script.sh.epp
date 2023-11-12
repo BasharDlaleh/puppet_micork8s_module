@@ -1,0 +1,4 @@
+#!/bin/bash
+lxc launch ubuntu:20.04 <%= $vm_name => --profile <%= $vm_name => --vm
+lxc exec <%= $vm_name => -- bash -c 'while [ "$(systemctl is-system-running 2>/dev/null)" != "running" ] && [ "$(systemctl is-system-running 2>/dev/null)" != "degraded" ]; do :; done'
+lxc exec <%= $vm_name => -- sudo echo 1
