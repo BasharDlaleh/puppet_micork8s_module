@@ -16,7 +16,7 @@ class microk8s (
   }
 
   exec {'init':
-    command => 'lxd init --preseed < /tmp/lxd_init.yaml'
-    require => File['/tmp/lxd_init.yaml']
+    command => 'lxd init --preseed < /tmp/lxd_init.yaml',
+    require => File['/tmp/lxd_init.yaml'],
   }
 }

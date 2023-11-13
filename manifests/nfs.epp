@@ -1,4 +1,3 @@
-
 package { 'nfs-kernel-server':
   ensure  => latest,
   require  => Exec['apt update'],
@@ -30,7 +29,7 @@ include simp-iptables
 
 iptables::listen::all {'nfs':
   trusted_nets => ["${microk8s::ipv4_address_cidr}"],
-  dports      => [ 2049 ]
+  dports      => [ 2049 ],
 }
 
 

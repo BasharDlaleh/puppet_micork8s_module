@@ -23,7 +23,7 @@ class microk8s::vm (
         memory       => $memory,
         disk         => $disk,
         passwd       => $passwd,
-    })
+    }),
   }
 
   exec {'launch':
@@ -34,7 +34,7 @@ class microk8s::vm (
   }
 
   exec {'microk8s-add-node':
-    command => "lxc exec `cat /tmp/master_name` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1"
+    command => "lxc exec `cat /tmp/master_name` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
     unless  => $master,
     require => Exec['launch'],
   }
