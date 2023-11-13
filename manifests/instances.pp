@@ -27,6 +27,8 @@
 class microk8s::instances (
   $nodes = [],
   $local_nfs_storage = false,
+  $master_ip = '',
+  $master_name = '',
 ){
   stage { 'host': }
   Stage['main'] -> Stage['host']
