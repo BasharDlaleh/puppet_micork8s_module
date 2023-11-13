@@ -25,8 +25,6 @@ service {'nfs-kernel-server':
   require => Package['nfs-kernel-server'],
 }
 
-include simp-iptables
-
 iptables::listen::all {'nfs':
   trusted_nets => ["${microk8s::ipv4_address_cidr}"],
   dports      => [ 2049 ],

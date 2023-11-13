@@ -28,8 +28,6 @@ class microk8s::instances (
   $nodes = [],
   $local_nfs_storage = false,
 ){
-  include stdlib
-
   stage { 'master':
     before => Stage['main'],
   }
