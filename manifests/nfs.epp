@@ -16,7 +16,7 @@ file {'/mnt/k8s_nfs_share/':
 }
 
 exec {'exports':
-  command => "sudo echo '/mnt/k8s_nfs_share  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
+  command => "echo '/mnt/k8s_nfs_share  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
 }
 
 service {'nfs-kernel-server':

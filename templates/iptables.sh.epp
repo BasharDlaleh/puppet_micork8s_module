@@ -1,6 +1,6 @@
 #!/bin/bash
-sudo iptables -t nat -I PREROUTING -i <%= $facts['networking']['primary'] %> -p TCP -d <%= $facts['ipaddress'] %>/32 --dport 80 -j DNAT --to-destination <%= $master_ip %>:80 &&
-sudo iptables -t nat -I PREROUTING -i <%= $facts['networking']['primary'] %> -p TCP -d <%= $facts['ipaddress'] %>/32 --dport 443 -j DNAT --to-destination <%= $master_ip %>:443 &&
-sudo mkdir /etc/iptables &&
-sudo sh -c "iptables-save > /etc/iptables/rules.v4" &&
-sudo sh -c "ip6tables-save > /etc/iptables/rules.v6"
+iptables -t nat -I PREROUTING -i <%= $facts['networking']['primary'] %> -p TCP -d <%= $facts['ipaddress'] %>/32 --dport 80 -j DNAT --to-destination <%= $master_ip %>:80 &&
+iptables -t nat -I PREROUTING -i <%= $facts['networking']['primary'] %> -p TCP -d <%= $facts['ipaddress'] %>/32 --dport 443 -j DNAT --to-destination <%= $master_ip %>:443 &&
+mkdir /etc/iptables &&
+sh -c "iptables-save > /etc/iptables/rules.v4" &&
+sh -c "ip6tables-save > /etc/iptables/rules.v6"

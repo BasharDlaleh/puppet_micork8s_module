@@ -32,7 +32,7 @@ class microk8s (
   }
 
   exec {'init':
-    command => 'sudo /snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
+    command => '/snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
     require => File['/tmp/lxd_init.yaml'],
   }
 
