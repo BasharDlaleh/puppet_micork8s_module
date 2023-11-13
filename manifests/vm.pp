@@ -46,7 +46,7 @@ class microk8s::vm (
   }
 
   $addons.each |$addon| {
-    exec {:
+    exec {"${addon}":
       command => "lxc exec `cat /tmp/master_name` -- sudo microk8s enable ${addon}",
       onlyif  => $master,
       require => [File['/tmp/addons.sh'], Exec['launch'] ],
