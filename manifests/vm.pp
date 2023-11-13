@@ -17,7 +17,7 @@ class microk8s::vm (
 
   file {"/tmp/${vm_name}.yaml":
     ensure  => file,
-    content => epp('microk8s/lxd_profile.yml.epp',{
+    content => epp('microk8s/lxd_profile.yaml.epp',{
         ipv4_address => $ipv4_address,
         memory       => $memory,
         disk         => $disk,
