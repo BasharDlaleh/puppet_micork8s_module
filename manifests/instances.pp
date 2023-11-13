@@ -57,7 +57,7 @@ class microk8s::instances (
           passwd       => $node[passwd],
           master       => $node[master],
           master_name  => $master_name,
-          require      => ["microk8s::vm/${master_name}"],
+          require      => Microk8s::Vm["${master_name}"],
       }
     }
     else {
