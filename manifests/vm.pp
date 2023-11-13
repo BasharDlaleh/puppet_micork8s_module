@@ -8,9 +8,8 @@ define microk8s::vm (
 ){
   $addons = ['dns', 'rbac', 'ingress', 'metrics-server', 'hostpath-storage']
 
-  file {'master_name':
+  file {'/tmp/master_name':
     ensure  => file,
-    command => "/tmp/master_name",
     content => $vm_name,
     onlyif  => $master,
   }
@@ -29,7 +28,7 @@ define microk8s::vm (
     command => epp('microk8s/launch_script.sh.epp',{
         vm_name => $vm_name,
     }),
-    require => File["/tmp/${vm_name}.yaml", "master_name"],
+    require => File["/tmp/${vm_name}.yaml", "/tmp/master_name"],
   }
 
   exec {'microk8s-add-node':
