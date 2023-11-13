@@ -49,7 +49,7 @@ class microk8s::instances (
 
   $nodes.each |$node| {
     if $node[master] == true {
-      microk8s::vm {"${node[vm_name]}":
+      microk8s::v {"${node[vm_name]}":
           vm_name      => $node[vm_name],
           ipv4_address => $node[ipv4_address],
           memory       => $node[memory],
@@ -61,7 +61,7 @@ class microk8s::instances (
       }
     }
     else {
-      microk8s::vm {"${node[vm_name]}":
+      microk8s::v {"${node[vm_name]}":
           vm_name      => $node[vm_name],
           ipv4_address => $node[ipv4_address],
           memory       => $node[memory],
