@@ -1,7 +1,7 @@
 class microk8s::host (
   $master_ip         = '10.206.32.100',
   $local_nfs_storage = false,
-  $stage             = 'last',
+  $stage             = 'host',
 ){
 
   file {'/tmp/iptables.sh':
