@@ -1,4 +1,4 @@
 #!/bin/bash
-lxc launch ubuntu:20.04 <%= $vm_name %> --profile <%= $vm_name %> --vm
-lxc exec <%= $vm_name %> -- bash -c 'while [ "$(systemctl is-system-running 2>/dev/null)" != "running" ] && [ "$(systemctl is-system-running 2>/dev/null)" != "degraded" ]; do :; done'
-lxc exec <%= $vm_name %> -- sudo echo 1
+sudo /snap/bin/lxc launch ubuntu:20.04 <%= $vm_name %> --profile <%= $vm_name %> --vm
+sudo /snap/bin/lxc exec <%= $vm_name %> -- bash -c 'while [ "$(systemctl is-system-running 2>/dev/null)" != "running" ] && [ "$(systemctl is-system-running 2>/dev/null)" != "degraded" ]; do :; done'
+sudo /snap/bin/lxc exec <%= $vm_name %> -- sudo echo 1
