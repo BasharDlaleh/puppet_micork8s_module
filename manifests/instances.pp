@@ -28,28 +28,37 @@ class microk8s::instances (
   $nodes = [],
   $local_nfs_storage = false,
 ){
-  stage { 'master':
-    before => Stage['main'],
-  }
   stage { 'host': }
   Stage['main'] -> Stage['host']
 
   $nodes.each |$node| {
     if $node[master] == true {
-#      $node[stage] = 'master'
       $master_ip   = $node[ipv4_address]
+      $master_name = $node[vm_name]
     }
   }
 
   $nodes.each |$node| {
-    class {'microk8s::vm':
-        vm_name      => $node[vm_name],
-        ipv4_address => $node[ipv4_address],
-        memory       => $node[memory],
-        disk         => $node[disk],
-        passwd       => $node[passwd],
-        master       => $node[master],
-        stage        => $node[stage],
+    if $node[master] == true {
+      microk8s::vm {"${node[vm_name]}":
+          vm_name      => $node[vm_name],
+          ipv4_address => $node[ipv4_address],
+          memory       => $node[memory],
+          disk         => $node[disk],
+          passwd       => $node[passwd],
+          master       => $node[master],
+          require      => Microk8s::Vm["${master_name}"]
+      }
+    }
+    else {
+      microk8s::vm {"${node[vm_name]}":
+          vm_name      => $node[vm_name],
+          ipv4_address => $node[ipv4_address],
+          memory       => $node[memory],
+          disk         => $node[disk],
+          passwd       => $node[passwd],
+          master       => $node[master],
+      }
     }
   }
 

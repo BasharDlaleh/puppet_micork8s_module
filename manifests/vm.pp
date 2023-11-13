@@ -1,4 +1,4 @@
-class microk8s::vm (
+define microk8s::vm (
     $vm_name      = '',
     $ipv4_address = '',
     $memory       = '8GB',
@@ -29,7 +29,7 @@ class microk8s::vm (
     command => epp('microk8s/launch_script.sh.epp',{
         vm_name => $vm_name,
     }),
-    require => File["/tmp/${vm_name}.yaml"],
+    require => File["/tmp/${vm_name}.yaml", "master_name"],
   }
 
   exec {'microk8s-add-node':
@@ -41,20 +41,19 @@ class microk8s::vm (
   exec {'microk8s-join-node':
     command => "lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join`",
     unless  => $master,
-    require => [File['master_name'], Exec['launch', 'microk8s-add-node'] ],
+    require => Exec['microk8s-add-node'],
   }
 
   $addons.each |$addon| {
     exec {"${addon}":
       command => "lxc exec `cat /tmp/master_name` -- sudo microk8s enable ${addon}",
       onlyif  => $master,
-      require => [File['/tmp/addons.sh'], Exec['launch'] ],
+      require => Exec['launch', 'microk8s-join-node'],
     }
   }
 
-  package {'nfs-coomon':
-    ensure => latest,
-    unless  => $master,
-    require => Exec['apt update'],
+  exec {'nfs-common':
+    command => "lxc exec ${vm_name} -- sudo apt install nfs-common -y",
+    require => Exec["lxc exec ${vm_name} -- sudo apt update"],
   }
 }
