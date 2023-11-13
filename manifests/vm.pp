@@ -26,28 +26,31 @@ define microk8s::vm (
     require => File["/tmp/${vm_name}.yaml"],
   }
 
-  exec {"microk8s-add-node_${vm_name}":
-    command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
-    unless  => $master,
-    require => Exec["launch_${vm_name}"],
+  if $master == false {
+    exec {"microk8s-add-node_${vm_name}":
+      command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
+      require => Exec["launch_${vm_name}"],
+    }
+
+    exec {"microk8s-join-node_${vm_name}":
+      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join`",
+      require => Exec["microk8s-add-node_${vm_name}"],
+    }
   }
 
-  exec {"microk8s-join-node_${vm_name}":
-    command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join`",
-    unless  => $master,
-    require => Exec["microk8s-add-node_${vm_name}"],
-  }
-
-  $addons.each |$addon| {
-    exec {"${vm_name}_${addon}":
-      command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
-      onlyif  => $master,
-      require => Exec["launch_${vm_name}", "microk8s-join-node_${vm_name}"],
+  
+  if $master == true {
+    $addons.each |$addon| {
+      exec {"${vm_name}_${addon}":
+        command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
+        require => Exec["launch_${vm_name}", "microk8s-join-node_${vm_name}"],
+      }
     }
   }
 
   exec {"apt-update_${vm_name}":
     command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
+    require => Exec["launch_${vm_name}"],
   }
 
   exec {"nfs-common_${vm_name}":
