@@ -41,9 +41,6 @@ class microk8s::instances (
       $node[stage] = 'master'
       $master_ip   = $node[ipv4_address]
     }
-    else {
-      $node[stage] = 'worker'
-    }
   }
 
   $nodes.each |$node| {

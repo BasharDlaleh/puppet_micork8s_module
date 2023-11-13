@@ -5,7 +5,6 @@ class microk8s::vm (
     $disk         = '60GiB',
     $passwd       = '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
     $master       = false,
-    $stage        = 'worker',
 ){
   $addons = ['dns', 'rbac', 'ingress', 'metrics-server', 'hostpath-storage']
 
