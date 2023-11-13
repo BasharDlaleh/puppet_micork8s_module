@@ -29,20 +29,20 @@ define microk8s::vm (
   exec {"microk8s-add-node_${vm_name}":
     command => "lxc exec `cat /tmp/${master_name}` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
     unless  => $master,
-    require => Exec['launch'],
+    require => Exec["launch_${vm_name}"],
   }
 
   exec {"microk8s-join-node_${vm_name}":
     command => "lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join`",
     unless  => $master,
-    require => Exec['microk8s-add-node'],
+    require => Exec["microk8s-add-node_${vm_name}"],
   }
 
   $addons.each |$addon| {
     exec {"${vm_name}_${addon}":
       command => "lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
       onlyif  => $master,
-      require => Exec['launch', 'microk8s-join-node'],
+      require => Exec["launch_${vm_name}", "microk8s-join-node_${vm_name}"],
     }
   }
 
