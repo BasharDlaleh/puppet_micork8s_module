@@ -58,6 +58,6 @@ class microk8s::instances (
   class {'microk8s::host':
     master_ip         => $master_ip,
     local_nfs_storage => $local_nfs_storage,
-    stage             => 'last',
+    stage             => 'host',
   }
 }
