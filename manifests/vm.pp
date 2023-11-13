@@ -43,7 +43,7 @@ define microk8s::vm (
     $addons.each |$addon| {
       exec {"${vm_name}_${addon}":
         command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
-        require => Exec["launch_${vm_name}", "microk8s-join-node_${vm_name}"],
+        require => Exec["launch_${vm_name}"],
       }
     }
   }
