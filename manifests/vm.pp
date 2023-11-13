@@ -19,11 +19,17 @@ define microk8s::vm (
     }),
   }
 
-  exec {"launch_${vm_name}":
-    command => epp('microk8s/launch_script.sh.epp',{
+  file {"/tmp/launch_${vm_name}.sh":
+    ensure  => file,
+    mode    => '755',
+    content => epp('microk8s/launch_script.sh.epp',{
         vm_name => $vm_name,
     }),
-    require => File["/tmp/${vm_name}.yaml"],
+  }
+
+  exec {"launch_${vm_name}":
+    command => "/tmp/launch_${vm_name}.sh",
+    require => File["/tmp/launch_${vm_name}.sh"],
   }
 
   if $master == false {

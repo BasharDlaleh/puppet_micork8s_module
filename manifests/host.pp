@@ -5,9 +5,9 @@ class microk8s::host (
 
   file {'/tmp/iptables.sh':
     ensure  => file,
-    mode    => '755',
+        => '755',
     content => epp('microk8s/iptables.sh.epp',{
-        master_ip => $master_ip,
+      mode  master_ip => $master_ip,
     }),
   }
 
