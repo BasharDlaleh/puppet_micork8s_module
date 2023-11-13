@@ -19,6 +19,11 @@ define microk8s::vm (
     }),
   }
 
+  exec {"create_profile_${vm_name}":
+    command => "/snap/bin/lxc profile create ${vm_name} && cat /tmp/${vm_name}.yaml | /snap/bin/lxc profile edit ${vm_name}",
+    require => File["/tmp/${vm_name}.yaml"],
+  }
+
   file {"/tmp/launch_${vm_name}.sh":
     ensure  => file,
     mode    => '755',
@@ -29,7 +34,7 @@ define microk8s::vm (
 
   exec {"launch_${vm_name}":
     command => "/tmp/launch_${vm_name}.sh",
-    require => File["/tmp/launch_${vm_name}.sh"],
+    require => [File["/tmp/launch_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
   if $master == false {
