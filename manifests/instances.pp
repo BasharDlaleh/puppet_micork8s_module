@@ -25,9 +25,23 @@
 #  }
 
 class microk8s::instances (
-  $nodes = [],
-  $master_ip         = '',
-  $master_name       = '',
+  $nodes = [{
+              vm_name      => 'master',
+              ipv4_address => '10.206.32.100',
+              memory       => '8GB',
+              disk         => '60GiB',
+              passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+              master       => true
+             },
+             {
+              vm_name      => 'worker1',
+              ipv4_address => '10.206.32.101',
+              memory       => '8GB',
+              disk         => '60GiB',
+              passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+              }],
+  $master_ip         = '10.206.32.100',
+  $master_name       = 'master',
   $local_nfs_storage = false,
 ){
   stage { 'host': }
@@ -43,7 +57,7 @@ class microk8s::instances (
           passwd       => $node[passwd],
           master       => $node[master],
           master_name  => $master_name,
-          require      => Microk8s::Vm["${master_name}"],
+          #require      => microk8s::vm["${master_name}"],
       }
     }
     else {
