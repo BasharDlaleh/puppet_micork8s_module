@@ -46,8 +46,12 @@ define microk8s::vm (
     }
   }
 
+  exec {"apt-update_${vm_name}":
+    command => "lxc exec ${vm_name} -- sudo apt update",
+  }
+
   exec {"nfs-common_${vm_name}":
     command => "lxc exec ${vm_name} -- sudo apt install nfs-common -y",
-    require => Exec["lxc exec ${vm_name} -- sudo apt update"],
+    require => Exec["apt-update_${vm_name}"],
   }
 }
