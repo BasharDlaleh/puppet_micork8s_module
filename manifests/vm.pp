@@ -7,6 +7,8 @@ class microk8s::vm (
     $master       = false,
     $stage        = 'worker',
 ){
+  $addons = ['dns', 'rbac', 'ingress', 'metrics-server', 'hostpath-storage']
+
   file {'master_name':
     ensure  => file,
     command => "/tmp/master_name",
@@ -43,16 +45,12 @@ class microk8s::vm (
     require => [File['master_name'], Exec['launch', 'microk8s-add-node'] ],
   }
 
-  file {'/tmp/addons.sh':
-    ensure  => file,
-    mode => 755,
-    source => 'puppet:///modules/microk8s/addons.sh',
-  }
-
-  exec {'microk8s-enable-addons':
-    command => '/tmp/addons.sh',
-    onlyif  => $master,
-    require => [File['/tmp/addons.sh'], Exec['launch'] ],
+  $addons.each |$addon| {
+    exec {:
+      command => "lxc exec `cat /tmp/master_name` -- sudo microk8s enable ${addon}",
+      onlyif  => $master,
+      require => [File['/tmp/addons.sh'], Exec['launch'] ],
+    }
   }
 
   package {'nfs-coomon':
