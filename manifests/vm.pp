@@ -24,24 +24,29 @@ define microk8s::vm (
     require => File["/tmp/${vm_name}.yaml"],
   }
 
-  file {"/tmp/launch_${vm_name}.sh":
+  file {"/tmp/wait_${vm_name}.sh":
     ensure  => file,
     mode    => '755',
-    content => epp('microk8s/launch_script.sh.epp',{
+    content => epp('microk8s/wait_script.sh.epp',{
         vm_name      => $vm_name,
         ipv4_address => $ipv4_address
     }),
   }
 
   exec {"launch_${vm_name}":
-    command => "/tmp/launch_${vm_name}.sh",
-    require => [File["/tmp/launch_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm",
+    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
+  }
+
+  exec {"wait_${vm_name}":
+    command => "/tmp/wait_${vm_name}.sh",
+    require => Exec["launch_${vm_name}"],
   }
 
   if $master == false {
     exec {"microk8s-add-node_${vm_name}":
       command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
-      require => Exec["launch_${vm_name}"],
+      require => Exec["wait_${vm_name}"],
     }
 
     exec {"microk8s-join-node_${vm_name}":
@@ -55,14 +60,14 @@ define microk8s::vm (
     $addons.each |$addon| {
       exec {"${vm_name}_${addon}":
         command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
-        require => Exec["launch_${vm_name}"],
+        require => Exec["wait_${vm_name}"],
       }
     }
   }
 
   exec {"apt-update_${vm_name}":
     command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
-    require => Exec["launch_${vm_name}"],
+    require => Exec["wait_${vm_name}"],
   }
 
   exec {"nfs-common_${vm_name}":
