@@ -20,7 +20,7 @@ define microk8s::vm (
   }
 
   exec {"create_profile_${vm_name}":
-    command => "/snap/bin/lxc profile create ${vm_name} && cat /tmp/${vm_name}.yaml | /snap/bin/lxc profile edit ${vm_name}",
+    command => "/snap/bin/lxc profile create ${vm_name} || true && cat /tmp/${vm_name}.yaml | /snap/bin/lxc profile edit ${vm_name}",
     require => File["/tmp/${vm_name}.yaml"],
   }
 
