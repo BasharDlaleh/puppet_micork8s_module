@@ -38,10 +38,10 @@ define microk8s::vm (
     require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
-  exec {"wait_${vm_name}":
-    command => "/tmp/wait_${vm_name}.sh",
-    require => Exec["launch_${vm_name}"],
-  }
+#  exec {"wait_${vm_name}":
+#    command => "/tmp/wait_${vm_name}.sh",
+#    require => Exec["launch_${vm_name}"],
+#  }
 
   if $master == false {
     exec {"microk8s-add-node_${vm_name}":
