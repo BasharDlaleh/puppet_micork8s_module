@@ -45,7 +45,7 @@ define microk8s::vm (
 
   if $master == false {
     exec {"microk8s-add-node_${vm_name}":
-      command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
+      command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
 #      require => Exec["wait_${vm_name}"],
     }
 
@@ -59,7 +59,7 @@ define microk8s::vm (
   if $master == true {
     $addons.each |$addon| {
       exec {"${vm_name}_${addon}":
-        command => "/snap/bin/lxc exec `cat /tmp/${master_name}` -- sudo microk8s enable ${addon}",
+        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
  #       require => Exec["wait_${vm_name}"],
       }
     }
