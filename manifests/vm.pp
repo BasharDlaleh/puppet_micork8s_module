@@ -34,7 +34,7 @@ define microk8s::vm (
   }
 
   exec {"launch_${vm_name}":
-    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm",
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm || true",
     require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
@@ -50,7 +50,7 @@ define microk8s::vm (
     }
 
     exec {"microk8s-join-node_${vm_name}":
-      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join`",
+      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join` || true",
       require => Exec["microk8s-add-node_${vm_name}"],
     }
   }
