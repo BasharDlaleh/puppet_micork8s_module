@@ -3,9 +3,10 @@ cluster: null
 networks:
 - config:
     ipv4.address: 10.206.32.1/24
+    ipv4.nat: "true"
     ipv6.address: auto
+    ipv6.nat: "true"
   description: ""
-  managed: true
   name: lxdbr0
   type: bridge
 storage_pools:

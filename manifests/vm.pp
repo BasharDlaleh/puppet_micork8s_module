@@ -28,7 +28,8 @@ define microk8s::vm (
     ensure  => file,
     mode    => '755',
     content => epp('microk8s/launch_script.sh.epp',{
-        vm_name => $vm_name,
+        vm_name      => $vm_name,
+        ipv4_address => $ipv4_address
     }),
   }
 
