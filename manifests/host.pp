@@ -17,7 +17,7 @@ class microk8s::host (
   }
 
   if $local_nfs_storage {
-    class {"microk8s::nfs":
+    class {'microk8s::nfs':
       nfs_shared_folder => $nfs_shared_folder,
     }
   }  
