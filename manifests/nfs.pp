@@ -17,7 +17,7 @@ class microk8s::nfs (
 
   file {"${nfs_shared_folder}":
     ensure  => directory,
-    mode    => 777,
+    mode    => '777',
     owner   => 'nobody',
     group   => 'nogroup',
   }
