@@ -69,13 +69,13 @@ define microk8s::vm (
 #    }
 #  }
 
-  exec {"apt-update_${vm_name}":
-    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
-    require => Exec["wait_${vm_name}"],
-  }
+#  exec {"apt-update_${vm_name}":
+#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
+#    require => Exec["wait_${vm_name}"],
+#  }
 
-  exec {"nfs-common_${vm_name}":
-    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt install nfs-common -y",
-    require => Exec["apt-update_${vm_name}"],
-  }
+#  exec {"nfs-common_${vm_name}":
+#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt install nfs-common -y",
+#    require => Exec["apt-update_${vm_name}"],
+#  }
 }
