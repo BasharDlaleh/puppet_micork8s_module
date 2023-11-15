@@ -12,6 +12,28 @@ class microk8s::host (
     }),
   }
 
+  firewall { '000 Forward host 80 to master 80':
+    chain     => 'PREROUTING',
+    table     => 'nat',
+    iniface   => "${facts['networking']['primary']}",
+    proto     => 'tcp',
+    dport     => '80',
+    destination => "${facts['ipaddress']}/32",
+    todest => "${master_ip}:80",
+    jump      => 'DNAT',
+  }
+
+  firewall { '001 Forward host 443 to master 443':
+    chain     => 'PREROUTING',
+    table     => 'nat',
+    iniface   => "${facts['networking']['primary']}",
+    proto     => 'tcp',
+    dport     => '443',
+    destination => "${facts['ipaddress']}/32",
+    todest => "${master_ip}:443",
+    jump      => 'DNAT',
+  }
+
   exec {'iptables':
     command => "/tmp/iptables.sh",
   }
