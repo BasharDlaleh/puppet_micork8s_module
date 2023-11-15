@@ -2,7 +2,7 @@ class microk8s::nfs (
   $nfs_shared_folder = '',
 ){
   exec {"apt_update_host":
-    command => "/usr/bin/apt update",
+    command => "sudo /usr/bin/apt update",
   }
 
   package { 'nfs-kernel-server':
@@ -24,6 +24,7 @@ class microk8s::nfs (
 
   exec {'exports':
     command => "/usr/bin/grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || /usr/bin/echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
+    require => Package['nfs-kernel-server'],
   }
 
   service {'nfs-kernel-server':
