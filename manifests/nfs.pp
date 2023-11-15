@@ -32,14 +32,18 @@ class microk8s::nfs (
     require => Package['nfs-kernel-server'],
   }
 
-  iptables::listen::tcp_stateful { 'nfs_tcp':
-    trusted_nets => ["${microk8s::ipv4_address_cidr}"],
-    dports => [ 2049 ]
+  firewall { 'allow nfs tcp access':
+    dport  => [2049],
+    proto  => 'tcp',
+    source => "${microk8s::ipv4_address_cidr}",
+    action => 'accept',
   }
 
-  iptables::listen::udp {'nfs_udp':
-    trusted_nets => ["${microk8s::ipv4_address_cidr}"],
-    dports => [ 2049 ]
+  firewall { 'allow nfs udp access':
+    dport  => [2049],
+    proto  => 'udp',
+    source => "${microk8s::ipv4_address_cidr}",
+    action => 'accept',
   }
 }
 
