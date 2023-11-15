@@ -1,9 +1,7 @@
 class microk8s::nfs (
   $nfs_shared_folder = '',
 ){
-  exec {"apt_update_host":
-    command => "sudo /usr/bin/apt update",
-  }
+  Apt::Source <| |> -> Package <| |>
 
   package { 'nfs-kernel-server':
     ensure  => latest,
