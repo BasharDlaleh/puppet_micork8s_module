@@ -15,7 +15,7 @@ class microk8s::nfs (
     require  => Exec['apt_update_host'],
   }
 
-  file {"${}":
+  file {"${nfs_shared_folder}":
     ensure  => directory,
     mode    => 777,
     owner   => 'nobody',
