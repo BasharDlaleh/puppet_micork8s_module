@@ -33,8 +33,12 @@ define microk8s::vm (
     }),
   }
 
+#  exec {"launch_${vm_name}":
+#    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm || true",
+#    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
+#  }
   exec {"launch_${vm_name}":
-    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} || true",
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} || true",
     require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
@@ -43,27 +47,27 @@ define microk8s::vm (
     require => Exec["launch_${vm_name}"],
   }
 
-  if $master == false {
-    exec {"microk8s-add-node_${vm_name}":
-      command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
-      require => Exec["wait_${vm_name}"],
-    }
+#  if $master == false {
+#    exec {"microk8s-add-node_${vm_name}":
+#      command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join 2>&1",
+#      require => Exec["wait_${vm_name}"],
+#    }
 
-    exec {"microk8s-join-node_${vm_name}":
-      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join` || true",
-      require => Exec["microk8s-add-node_${vm_name}"],
-    }
-  }
+#    exec {"microk8s-join-node_${vm_name}":
+#      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join` || true",
+#      require => Exec["microk8s-add-node_${vm_name}"],
+#    }
+#  }
 
   
-  if $master == true {
-    $addons.each |$addon| {
-      exec {"${vm_name}_${addon}":
-        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
-        require => Exec["wait_${vm_name}"],
-      }
-    }
-  }
+#  if $master == true {
+#    $addons.each |$addon| {
+#      exec {"enable_addon_${addon}":
+#        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
+#        require => Exec["wait_${vm_name}"],
+#      }
+#    }
+#  }
 
   exec {"apt-update_${vm_name}":
     command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
