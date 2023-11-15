@@ -23,7 +23,7 @@ class microk8s::nfs (
   }
 
   exec {'exports':
-    command => "grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
+    command => "/usr/bin/grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || /usr/bin/echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
   }
 
   service {'nfs-kernel-server':
