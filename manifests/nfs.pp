@@ -5,12 +5,10 @@ class microk8s::nfs (
 
   package { 'nfs-kernel-server':
     ensure  => latest,
-    require  => Exec['apt_update_host'],
   }
 
   package { 'nfs-common':
     ensure  => latest,
-    require  => Exec['apt_update_host'],
   }
 
   file {"${nfs_shared_folder}":
