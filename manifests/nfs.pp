@@ -32,14 +32,14 @@ class microk8s::nfs (
     require => Package['nfs-kernel-server'],
   }
 
-  firewall { 'allow_nfs_tcp_access':
+  firewall { '000 allow nfs tcp access':
     dport  => [2049],
     proto  => 'tcp',
     source => "${microk8s::ipv4_address_cidr}",
     action => 'accept',
   }
 
-  firewall { 'allow_nfs_udp_access':
+  firewall { '001 allow nfs udp access':
     dport  => [2049],
     proto  => 'udp',
     source => "${microk8s::ipv4_address_cidr}",
