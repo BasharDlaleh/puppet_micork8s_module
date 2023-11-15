@@ -16,6 +16,6 @@ class microk8s::host (
   }
 
   if $local_nfs_storage {
-    include nfs
+    include microk8s::nfs
   }  
 }
