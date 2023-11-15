@@ -18,7 +18,7 @@ class microk8s::nfs (
     group   => 'nogroup',
   }
 
-  exec {'exports':
+  exec {'export_nfs':
     command => "/usr/bin/grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || /usr/bin/echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
     require => Package['nfs-kernel-server'],
   }

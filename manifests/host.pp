@@ -4,7 +4,7 @@ class microk8s::host (
   $nfs_shared_folder = '',
 ){
 
-  file {'/tmp/iptables.sh':
+  file {'/tmp/persist-iptables.sh':
     ensure  => file,
     mode    => '755',
     content => epp('microk8s/iptables.sh.epp',{
@@ -36,6 +36,7 @@ class microk8s::host (
 
   exec {'iptables':
     command => "/tmp/iptables.sh",
+    require => File['/tmp/persist-iptables.sh']
   }
 
   if $local_nfs_storage {
