@@ -1,6 +1,7 @@
 class microk8s::host (
   $master_ip         = '10.206.32.100',
   $local_nfs_storage = false,
+  $nfs_shared_folder = '',
 ){
 
   file {'/tmp/iptables.sh':
@@ -16,6 +17,8 @@ class microk8s::host (
   }
 
   if $local_nfs_storage {
-    include microk8s::nfs
+    class {"microk8s::nfs":
+      nfs_shared_folder => $nfs_shared_folder,
+    }
   }  
 }
