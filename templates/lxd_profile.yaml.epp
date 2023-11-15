@@ -26,8 +26,8 @@ config:
   security.nesting: true 
 description: LXD profile for K8S Node
 devices:
-  enp5s0:
-    name: enp5s0
+  eth0:
+    name: eth0
     ipv4.address: <%= $ipv4_address %>
     nictype: bridged
     parent: lxdbr0
