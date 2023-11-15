@@ -21,7 +21,7 @@ class microk8s (
               'disk'         => '10GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
-  $local_nfs_storage = false,
+  $local_nfs_storage = true,
 ){
 
   file {'/tmp/lxd_init.yaml':

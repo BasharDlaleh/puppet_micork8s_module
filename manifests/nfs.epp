@@ -1,11 +1,15 @@
+exec {"apt_update_host":
+  command => "apt update",
+}
+
 package { 'nfs-kernel-server':
   ensure  => latest,
-  require  => Exec['apt update'],
+  require  => Exec['apt_update_host'],
 }
 
 package { 'nfs-common':
   ensure  => latest,
-  require  => Exec['apt update'],
+  require  => Exec['apt_update_host'],
 }
 
 file {'/mnt/k8s_nfs_share/':
