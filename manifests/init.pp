@@ -38,6 +38,6 @@ class microk8s (
 
   class {'microk8s::instances':
     nodes             => $nodes,
-    local_nfs_storage => false,
+    local_nfs_storage => $local_nfs_storage,
   }
 }
