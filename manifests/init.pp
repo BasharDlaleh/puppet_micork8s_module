@@ -26,6 +26,7 @@ class microk8s (
   $nodes = [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
+              'ipv6_address' => 'fd42:db15:9897:8076:216:3eff:fe32:9cb6',
               'memory'       => '2GB',
               'disk'         => '10GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
@@ -34,6 +35,7 @@ class microk8s (
              {
               'vm_name'      => 'worker1',
               'ipv4_address' => '10.206.32.101',
+              'ipv6_address' => 'fd42:db15:9897:8076:216:3eff:fe6e:8c18',
               'memory'       => '2GB',
               'disk'         => '10GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',

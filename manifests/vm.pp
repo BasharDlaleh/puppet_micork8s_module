@@ -1,6 +1,7 @@
 define microk8s::vm (
     $vm_name      = '',
     $ipv4_address = '',
+    $ipv6_address = '',
     $memory       = '8GB',
     $disk         = '60GiB',
     $passwd       = '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
@@ -13,6 +14,7 @@ define microk8s::vm (
     ensure  => file,
     content => epp('microk8s/lxd_profile.yaml.epp',{
         ipv4_address => $ipv4_address,
+        ipv6_address => $ipv6_address,
         memory       => $memory,
         disk         => $disk,
         passwd       => $passwd,

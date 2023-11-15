@@ -34,8 +34,8 @@ class microk8s::host (
     jump      => 'DNAT',
   }
 
-  exec {'iptables':
-    command => "/tmp/iptables.sh",
+  exec {'persist-iptables':
+    command => "/tmp/persist-iptables.sh",
     require => File['/tmp/persist-iptables.sh']
   }
 
