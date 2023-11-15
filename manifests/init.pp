@@ -41,7 +41,7 @@ class microk8s (
   $local_nfs_storage = true,
   $master_ip         = '10.206.32.100',
   $master_name       = 'master',
-  $nfs_shared_folder => '/mnt/k8s_nfs_share/'
+  $nfs_shared_folder => '/mnt/k8s_nfs_share/',
 ){
 
   stage { 'host': }
