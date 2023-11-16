@@ -29,6 +29,7 @@ devices:
   eth0:
     name: eth0
     ipv4.address: <%= $ipv4_address %>
+    ipv6.address: <%= $ipv6_address %>
     nictype: bridged
     parent: lxdbr0
     type: nic
