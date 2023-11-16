@@ -14,7 +14,6 @@ define microk8s::vm (
     ensure  => file,
     content => epp('microk8s/lxd_profile.yaml.epp',{
         ipv4_address => $ipv4_address,
-        ipv6_address => $ipv6_address,
         memory       => $memory,
         disk         => $disk,
         passwd       => $passwd,
@@ -40,7 +39,7 @@ define microk8s::vm (
 #    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
 #  }
   exec {"launch_${vm_name}":
-    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} || true",
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} || true",
     require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
@@ -71,13 +70,13 @@ define microk8s::vm (
 #    }
 #  }
 
-#  exec {"apt-update_${vm_name}":
-#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
-#    require => Exec["wait_${vm_name}"],
-#  }
+  exec {"apt-update_${vm_name}":
+    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
+    require => Exec["wait_${vm_name}"],
+  }
 
-#  exec {"nfs-common_${vm_name}":
-#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt install nfs-common -y",
-#    require => Exec["apt-update_${vm_name}"],
-#  }
+  exec {"nfs-common_${vm_name}":
+    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt install nfs-common -y",
+    require => Exec["apt-update_${vm_name}"],
+  }
 }
