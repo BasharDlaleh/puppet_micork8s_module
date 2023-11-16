@@ -19,7 +19,10 @@
 #              disk         => '60GiB',
 #              passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
 #              }],
-#    local_nfs_storage = true,
+#    $local_nfs_storage = true,
+#    $master_ip         = '10.206.32.100',
+#    $master_name       = 'master',
+#    $nfs_shared_folder = '/mnt/k8s_nfs_share',
 #  }
 class microk8s (
   $ipv4_address_cidr = '10.206.32.1/24',

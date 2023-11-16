@@ -56,14 +56,14 @@ define microk8s::vm (
   }
 
   
-  if $master == true {
-    $addons.each |$addon| {
-      exec {"enable_addon_${addon}":
-        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
+#  if $master == true {
+#    $addons.each |$addon| {
+#      exec {"enable_addon_${addon}":
+#        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
 #        require => Exec["wait_${vm_name}"],
-      }
-    }
-  }
+#      }
+#    }
+#  }
 
   exec {"apt-update_${vm_name}":
     command => "/snap/bin/lxc exec ${vm_name} -- sudo apt update",
