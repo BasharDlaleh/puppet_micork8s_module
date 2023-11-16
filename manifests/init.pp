@@ -42,7 +42,7 @@ class microk8s (
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
   $local_nfs_storage = true,
-  $master_ip         = '10.206.32.124',
+  $master_ip         = '10.206.32.100',
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
 ){

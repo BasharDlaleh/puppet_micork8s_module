@@ -33,45 +33,45 @@ define microk8s::vm (
     }),
   }
 
-#  exec {"launch_${vm_name}":
-#    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm || true",
-#    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
-#  }
+  exec {"launch_${vm_name}":
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} --vm || true",
+    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
+  }
 
-#  exec {"wait_${vm_name}":
-#    command => "/tmp/wait_${vm_name}.sh",
-#    require => Exec["launch_${vm_name}"],
-#  }
+  exec {"wait_${vm_name}":
+    command => "/tmp/wait_${vm_name}.sh",
+    require => Exec["launch_${vm_name}"],
+  }
 
   if $master == false {
     exec {"microk8s-add-node_${vm_name}":
       command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join-${vm_name} 2>&1",
-#      require => Exec["wait_${vm_name}"],
+      require => Exec["wait_${vm_name}"],
     }
 
     exec {"microk8s-join-node_${vm_name}":
-      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join-${vm_name}`",
+      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join-${vm_name}` || true",
       require => Exec["microk8s-add-node_${vm_name}"],
     }
   }
 
   
-#  if $master == true {
-#    $addons.each |$addon| {
-#      exec {"enable_addon_${addon}":
-#        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
-#        require => Exec["wait_${vm_name}"],
-#      }
-#    }
-#  }
+  if $master == true {
+    $addons.each |$addon| {
+      exec {"enable_addon_${addon}":
+        command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s enable ${addon}",
+        require => Exec["wait_${vm_name}"],
+      }
+    }
+  }
 
-#  exec {"apt-update_${vm_name}":
-#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get update",
-#    require => Exec["wait_${vm_name}"],
-#  }
+  exec {"apt-update_${vm_name}":
+    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get update",
+    require => Exec["wait_${vm_name}"],
+  }
 
-#  exec {"nfs-common_${vm_name}":
-#    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get install nfs-common",
-#    require => Exec["apt-update_${vm_name}"],
-#  }
+  exec {"nfs-common_${vm_name}":
+    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get install nfs-common",
+    require => Exec["apt-update_${vm_name}"],
+  }
 }
