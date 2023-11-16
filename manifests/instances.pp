@@ -7,7 +7,6 @@ class microk8s::instances (
       microk8s::vm {"${node['vm_name']}":
           vm_name      => $node['vm_name'],
           ipv4_address => $node['ipv4_address'],
-          ipv6_address => $node['ipv6_address'],
           memory       => $node['memory'],
           disk         => $node['disk'],
           passwd       => $node['passwd'],
@@ -19,7 +18,6 @@ class microk8s::instances (
       microk8s::vm {"${node[vm_name]}":
           vm_name      => $node['vm_name'],
           ipv4_address => $node['ipv4_address'],
-          ipv6_address => $node['ipv6_address'],
           memory       => $node['memory'],
           disk         => $node['disk'],
           passwd       => $node['passwd'],

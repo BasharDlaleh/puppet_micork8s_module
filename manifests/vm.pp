@@ -1,7 +1,6 @@
 define microk8s::vm (
     $vm_name      = '',
     $ipv4_address = '',
-    $ipv6_address = '',
     $memory       = '8GB',
     $disk         = '60GiB',
     $passwd       = '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
@@ -14,7 +13,6 @@ define microk8s::vm (
     ensure  => file,
     content => epp('microk8s/lxd_profile.yaml.epp',{
         ipv4_address => $ipv4_address,
-        ipv6_address => $ipv6_address,
         memory       => $memory,
         disk         => $disk,
         passwd       => $passwd,
@@ -40,7 +38,7 @@ define microk8s::vm (
 #    require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
 #  }
   exec {"launch_${vm_name}":
-    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} --profile ${vm_name} || true",
+    command => "/snap/bin/lxc launch ubuntu:20.04 ${vm_name} || true",
     require => [File["/tmp/wait_${vm_name}.sh"], Exec["create_profile_${vm_name}"]],
   }
 
