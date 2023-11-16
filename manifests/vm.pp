@@ -50,7 +50,7 @@ define microk8s::vm (
     }
 
     exec {"microk8s-join-node_${vm_name}":
-      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join-${vm_name}` || true",
+      command => "/snap/bin/lxc exec ${vm_name} -- sudo `cat /tmp/microk8s-join-${vm_name}`",
       require => Exec["microk8s-add-node_${vm_name}"],
     }
   }
