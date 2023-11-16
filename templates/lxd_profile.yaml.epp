@@ -29,7 +29,6 @@ devices:
   enp5s0:
     name: enp5s0
     ipv4.address: <%= $ipv4_address %>
-    ipv6.address: <%= $ipv6_address %>
     nictype: bridged
     parent: lxdbr0
     type: nic
