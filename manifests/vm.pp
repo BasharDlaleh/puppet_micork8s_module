@@ -46,7 +46,7 @@ define microk8s::vm (
   if $master == false {
     exec {"microk8s-add-node_${vm_name}":
       command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s add-node | grep 'microk8s join' | grep -v worker | head -1 > /tmp/microk8s-join-${vm_name} 2>&1",
-      require => Exec["wait_${vm_name}"],
+#      require => Exec["wait_${vm_name}"],
     }
 
     exec {"microk8s-join-node_${vm_name}":
