@@ -30,14 +30,14 @@ class microk8s::nfs (
   }
 
   firewall { '000 allow nfs tcp access':
-    dport  => [2049],
+    dport  => 2049,
     proto  => 'tcp',
     source => "${microk8s::ipv4_address_cidr}",
     action => 'accept',
   }
 
   firewall { '001 allow nfs udp access':
-    dport  => [2049],
+    dport  => 2049,
     proto  => 'udp',
     source => "${microk8s::ipv4_address_cidr}",
     action => 'accept',
