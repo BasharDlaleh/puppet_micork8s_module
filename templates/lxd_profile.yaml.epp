@@ -18,7 +18,7 @@ config:
       - [ /usr/bin/sudo, /usr/sbin/usermod, -a, -G, microk8s, ubuntu]
       - [ /usr/bin/sudo, /usr/bin/chown, -f, -R, ubuntu, ~/.kube ]
       - [ /usr/bin/newgrp, microk8s ]
-  limits.cpu: "2"
+  limits.cpu: "<%= $cpu %>"
   limits.memory: <%= $memory %>
   limits.memory.swap: "false"
   boot.autostart: "false"

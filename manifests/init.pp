@@ -5,19 +5,21 @@
 # @example
 #  class {'microk8s':
 #    nodes => [{
-#              vm_name      => 'master',
-#              ipv4_address => '10.206.32.100',
-#              memory       => '8GB',
-#              disk         => '60GiB',
-#              passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
-#              master       => true
+#              'vm_name'      => 'master',
+#              'ipv4_address' => '10.206.32.100',
+#              'memory'       => '8GB',
+#              'cpu'          => '2',
+#              'disk'         => '60GiB',
+#              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+#              'master'       => true
 #             },
 #             {
-#              vm_name      => 'worker1',
-#              ipv4_address => '10.206.32.101',
-#              memory       => '8GB',
-#              disk         => '60GiB',
-#              passwd       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+#              'vm_name'      => 'worker1',
+#              'ipv4_address' => '10.206.32.101',
+#              'memory'       => '8GB',
+#              'cpu'          => '2',
+#              'disk'         => '60GiB',
+#              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
 #              }],
 #    $local_nfs_storage = true,
 #    $master_ip         = '10.206.32.100',
@@ -30,6 +32,7 @@ class microk8s (
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
               'memory'       => '8GB',
+              'cpu'          => '2',
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               'master'       => true
@@ -38,6 +41,7 @@ class microk8s (
               'vm_name'      => 'worker1',
               'ipv4_address' => '10.206.32.101',
               'memory'       => '8GB',
+              'cpu'          => '2',
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               },
@@ -45,6 +49,7 @@ class microk8s (
               'vm_name'      => 'worker2',
               'ipv4_address' => '10.206.32.102',
               'memory'       => '8GB',
+              'cpu'          => '2',
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
