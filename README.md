@@ -102,14 +102,7 @@ For a list of supported operating systems, see metadata.json.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you wish to contribute to this project you can submit a pull request to the repo, 
-
-https://github.com/BasharDlaleh/puppet_micork8s_module
+If you wish to contribute to this project you can submit a pull request to the repo
 
 ##### some ideas for contribution
 
