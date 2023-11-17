@@ -1,5 +1,5 @@
 {
-  "name": "BasharDlaleh-microk8s",
+  "name": "BahsarDlaleh-microk8s",
   "version": "0.1.0",
   "author": "BasharDlaleh",
   "summary": "Deploy multi-node Microk8s cluster on LXD VMs on dedicated server",
