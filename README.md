@@ -49,6 +49,8 @@ this module already has default values defined for everything as below, you can 
     master ipv4:               10.206.32.100
     NFS shared folder:         /mnt/k8s_nfs_share
 
+so you just have to include the module in your puppet manifest:
+
 `include microk8s`
 
 **Note:** by default we are defining a local NFS storage on the host on the path /mnt/k8s_nfs_share which is better than using Kubernetes hostpath storage but you can disable that as you will see in the section below.
@@ -57,7 +59,8 @@ this module already has default values defined for everything as below, you can 
 
 If you wish to customize the defaults you can pass them to the main class microk8s,
 
-`class {'microk8s': 
+```puppet
+class {'microk8s': 
   ipv4_address_cidr => '10.206.32.1/24',
   nodes = [{
               'vm_name'      => 'master',
@@ -88,7 +91,8 @@ If you wish to customize the defaults you can pass them to the main class microk
   master_ip         => '10.206.32.100',
   master_name       => 'master',
   nfs_shared_folder => '/mnt/k8s_nfs_share',
-}`
+}
+```
 
 **Note:** note that the nodes specifications are passed as an array of hashes so if you wish to change even one value you'll have to pass all the other values inside the nodes array with it.
 
