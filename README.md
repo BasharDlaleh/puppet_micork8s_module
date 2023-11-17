@@ -9,97 +9,90 @@ information to include in your README.
 ## Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with microk8s](#setup)
-    * [What microk8s affects](#what-microk8s-affects)
+2. [Setup - The basics of getting started with microk8s](#setup)
     * [Setup requirements](#setup-requirements)
     * [Beginning with microk8s](#beginning-with-microk8s)
-1. [Usage - Configuration options and additional functionality](#usage)
-1. [Limitations - OS compatibility, etc.](#limitations)
-1. [Development - Guide for contributing to the module](#development)
+3. [Usage - Configuration and customization options](#usage)
+4. [Limitations - OS compatibility, etc.](#limitations)
+5. [Development - Guide for contributing to the module](#development)
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+Microk8s module deploys a production-ready multi-node Microk8s cluster on LXD VMs on a dedicated server, this approach is helpful for those who want to deploy a small and affordable Kubernetes cluster to take advantage of the automation and observability it provides but not for those looking for high availability as this is still a one node cluster physically.
 
 ## Setup
 
-### What microk8s affects **OPTIONAL**
+### Setup Requirements
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to
-mention:
-
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+* This module was tested on Ubuntu 20.04 dedicated server.
+* at least 32GB of RAM and 4 CPU cores.
+* public ipv4 address for your server.
 
 ### Beginning with microk8s
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+in the following sections you will see how to define your cluster nodes specifications and provision the cluster with minimal effort.
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+you can use this module either with the default values or by defining you own values as follow
 
-## Reference
+#### Defaults
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
+this module already has default values defined for everything as below, you can go with these if you don't wish to make any changes,
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+    ipv4 address range:        10.206.32.1/24
+    number of nodes:           one master and 2 workers
+    memory per node:           8 GB
+    cpu per node:              2
+    disk per node:             60 GB
+    local NFS storage on host: enabled
+    master ipv4:               10.206.32.100
+    NFS shared folder:         /mnt/k8s_nfs_share
 
-For each element (class, defined type, function, and so on), list:
+**Note:** by default we are defining a local NFS storage on the host on the path /mnt/k8s_nfs_share which is better than using Kubernetes hostpath storage but you can disable that as you will see in the section below.
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+#### Customization
 
-For example:
+If you wish to customize the defaults you can pass them to the main class microk8s,
 
-```
-### `pet::cat`
+class {'microk8s': 
+  ipv4_address_cidr => '10.206.32.1/24',
+  nodes = [{
+              'vm_name'      => 'master',
+              'ipv4_address' => '10.206.32.100',
+              'memory'       => '8GB',
+              'cpu'          => '2',
+              'disk'         => '60GiB',
+              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+              'master'       => true
+             },
+             {
+              'vm_name'      => 'worker1',
+              'ipv4_address' => '10.206.32.101',
+              'memory'       => '8GB',
+              'cpu'          => '2',
+              'disk'         => '60GiB',
+              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+              },
+              {
+              'vm_name'      => 'worker2',
+              'ipv4_address' => '10.206.32.102',
+              'memory'       => '8GB',
+              'cpu'          => '2',
+              'disk'         => '60GiB',
+              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
+              }],
+  local_nfs_storage => true,
+  master_ip         => '10.206.32.100',
+  master_name       => 'master',
+  nfs_shared_folder => '/mnt/k8s_nfs_share',
+}
 
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+**Note:** note that the nodes specifications are passed as an array of hashes so if you wish to change even one value you'll have to pass all the other values inside the nodes array with it.
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+For a list of supported operating systems, see metadata.json.
 
 ## Development
 
@@ -108,10 +101,11 @@ to your project and how they should submit their work.
 
 ## Release Notes/Contributors/Etc. **Optional**
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
+If you wish to contribute to this project you can submit a pull request to the repo, 
 
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+https://github.com/BasharDlaleh/puppet_micork8s_module
+
+##### some ideas for contribution
+
+1. currently the used LXD profiles only work for VMs, you can try to make it work for containers which is better for local development use.
+2. add parameters for enabling the most popular K8S addons like Prometheus, ELK,....etc
