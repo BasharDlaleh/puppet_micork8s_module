@@ -96,6 +96,8 @@ class {'microk8s':
 
 **Note:** note that the nodes specifications are passed as an array of hashes so if you wish to change even one value you'll have to pass all the other values inside the nodes array with it.
 
+**Note:** the 'passwd' parameter is the hashed password for the ubuntu user created inside the LXD VM which you'll prbably won't need as you can exec into the VM from the host without it.
+
 ## Limitations
 
 For a list of supported operating systems, see metadata.json.
