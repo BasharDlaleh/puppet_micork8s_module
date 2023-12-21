@@ -73,7 +73,7 @@ define microk8s::vm (
   }
 
   exec {"nfs-common_${vm_name}":
-    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get install nfs-common",
+    command => "/snap/bin/lxc exec ${vm_name} -- sudo apt-get install -y nfs-common",
     require => Exec["apt-update_${vm_name}"],
   }
 }
