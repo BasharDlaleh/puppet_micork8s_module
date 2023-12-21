@@ -1,6 +1,6 @@
 {
   "name": "bahsardlaleh-microk8s",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "BasharDlaleh",
   "summary": "Deploy multi-node Microk8s cluster on LXD VMs on dedicated server",
   "license": "Apache-2.0",
