@@ -3,6 +3,8 @@ class microk8s::host (
   $local_nfs_storage = false,
   $nfs_shared_folder = '',
   $enable_host_ufw   = false,
+  $kubectl_user      = 'ubuntu',
+  $kubectl_user_home = '/home/ubuntu',
 ){
 
   file {'/tmp/persist-iptables.sh':
@@ -61,5 +63,20 @@ class microk8s::host (
       nfs_shared_folder => $nfs_shared_folder,
       enable_host_ufw   => $enable_host_ufw,
     }
+  }
+
+  include kubectl
+
+  file {"${kubectl_home_user}/.kube":
+    ensure  => directory,
+    mode    => '775',
+    owner   => "${kubectl_user}",
+    group   => "${kubectl_user}",
+  }
+
+  exec {"configure-kubectl":
+      #command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s config > ${kubectl_user_home}/.kube/config 2>&1",
+      command => "echo 'kubectlconfig' > ${kubectl_user_home}/.kube/config 2>&1",
+      require => File["${kubectl_home_user}/.kube"],
   }  
 }

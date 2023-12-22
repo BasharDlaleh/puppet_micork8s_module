@@ -58,6 +58,8 @@ class microk8s (
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
   $enable_host_ufw   = false,
+  $kubectl_user = 'ubuntu',
+  $kubectl_user_home = '/home/ubuntu',
 ){
 
   stage { 'host': }
@@ -85,6 +87,8 @@ class microk8s (
     local_nfs_storage => $local_nfs_storage,
     nfs_shared_folder => $nfs_shared_folder,
     enable_host_ufw   => $enable_host_ufw,
+    kubectl_user      => $kubectl_user,
+    kubectl_user_home => $kubectl_user_home,
     stage             => 'host',
   }
 }
