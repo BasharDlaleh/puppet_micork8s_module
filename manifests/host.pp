@@ -6,7 +6,7 @@ class microk8s::host (
   $kubectl_user      = 'ubuntu',
   $kubectl_user_home = '/home/ubuntu',
 ){
-
+  # add routing rules to route web traffic from host to LXD master
   file {'/tmp/persist-iptables.sh':
     ensure  => file,
     mode    => '755',
@@ -42,6 +42,7 @@ class microk8s::host (
     require => File['/tmp/persist-iptables.sh']
   }
 
+  # allow http, https, ssh in ufw
   class { 'ufw': }
   
   if $enable_host_ufw {
@@ -58,6 +59,7 @@ class microk8s::host (
     }
   } 
 
+  # configure nfs storage
   if $local_nfs_storage {
     class {'microk8s::nfs':
       nfs_shared_folder => $nfs_shared_folder,
@@ -65,6 +67,7 @@ class microk8s::host (
     }
   }
 
+  # install and configure kubectl on host
   include kubectl
 
   file {"${kubectl_user_home}/.kube":
@@ -75,8 +78,7 @@ class microk8s::host (
   }
 
   exec {"configure-kubectl":
-      #command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s config > ${kubectl_user_home}/.kube/config 2>&1",
-      command => "/usr/bin/echo 'kubectlconfig' > ${kubectl_user_home}/.kube/config 2>&1",
+      command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s config > ${kubectl_user_home}/.kube/config 2>&1",
       require => File["${kubectl_user_home}/.kube"],
   }  
 }

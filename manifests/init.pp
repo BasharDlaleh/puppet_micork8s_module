@@ -57,30 +57,30 @@ class microk8s (
   $master_ip         = '10.206.32.100',
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
-  $enable_host_ufw   = false,
-  $kubectl_user      = 'vagrant',
-  $kubectl_user_home = '/home/vagrant',
+  $enable_host_ufw   = true,
+  $kubectl_user      = 'ubuntu',
+  $kubectl_user_home = '/home/ubuntu',
 ){
 
   stage { 'host': }
   Stage['main'] -> Stage['host']
 
-  #file {'/tmp/lxd_init.yaml':
-  #  ensure  => file,
-  #  content => epp('microk8s/lxd_init.yaml.epp',{
-  #      ipv4_address_cidr => $ipv4_address_cidr,
-  #  }),
-  #}
+  file {'/tmp/lxd_init.yaml':
+    ensure  => file,
+    content => epp('microk8s/lxd_init.yaml.epp',{
+        ipv4_address_cidr => $ipv4_address_cidr,
+    }),
+  }
 
-  #exec {'init':
-  #  command => '/snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
-  #  require => File['/tmp/lxd_init.yaml'],
-  #}
+  exec {'init':
+    command => '/snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
+    require => File['/tmp/lxd_init.yaml'],
+  }
 
-  #class {'microk8s::instances':
-  #  nodes             => $nodes,
-  #  master_name       => $master_name,
-  #}
+  class {'microk8s::instances':
+    nodes             => $nodes,
+    master_name       => $master_name,
+  }
 
   class {'microk8s::host':
     master_ip         => $master_ip,

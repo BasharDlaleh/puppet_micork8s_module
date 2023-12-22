@@ -61,8 +61,8 @@ If you wish to customize the defaults you can pass them to the main class microk
 
 ```puppet
 class {'microk8s': 
-  ipv4_address_cidr => '10.206.32.1/24',
-  nodes = [{
+  $ipv4_address_cidr => '10.206.32.1/24',
+  $nodes = [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
               'memory'       => '8GB',
@@ -87,10 +87,13 @@ class {'microk8s':
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
-  local_nfs_storage => true,
-  master_ip         => '10.206.32.100',
-  master_name       => 'master',
-  nfs_shared_folder => '/mnt/k8s_nfs_share',
+  $local_nfs_storage => true,
+  $master_ip         => '10.206.32.100',
+  $master_name       => 'master',
+  $nfs_shared_folder => '/mnt/k8s_nfs_share',
+  $enable_host_ufw   = false,
+  $kubectl_user      = 'ubuntu',
+  $kubectl_user_home = '/home/ubuntu',
 }
 ```
 
@@ -105,6 +108,12 @@ For a list of supported operating systems, see metadata.json.
 ## Development
 
 If you wish to contribute to this project you can submit a pull request to the repo
+
+##### Important Notes
+
+1. you must run puppet commands on agents as root, sudo user is not enough.
+2. if you have multiple environments on puppet server you might need to run `puppet generate types` on server so you don't have any errors with 'archive' package.
+3. you can ignore any warnings related to iptables rules persistency.
 
 ##### some ideas for contribution
 
