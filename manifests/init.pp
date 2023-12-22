@@ -57,7 +57,7 @@ class microk8s (
   $master_ip         = '10.206.32.100',
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
-  $enable_host_ufw   = true,
+  $enable_host_ufw   = false,
 ){
 
   stage { 'host': }
