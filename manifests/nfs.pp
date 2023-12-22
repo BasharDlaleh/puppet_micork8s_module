@@ -29,18 +29,26 @@ class microk8s::nfs (
     require => Package['nfs-kernel-server'],
   }
 
-  firewall { '000 allow nfs tcp access':
-    dport  => 2049,
-    proto  => 'tcp',
-    source => "${microk8s::ipv4_address_cidr}",
-    action => 'accept',
-  }
+  if $enable_host_ufw == false {
+    firewall { '000 allow nfs tcp access':
+      dport  => 2049,
+      proto  => 'tcp',
+      source => "${microk8s::ipv4_address_cidr}",
+      action => 'accept',
+    }
 
-  firewall { '001 allow nfs udp access':
-    dport  => 2049,
-    proto  => 'udp',
-    source => "${microk8s::ipv4_address_cidr}",
-    action => 'accept',
+    firewall { '001 allow nfs udp access':
+      dport  => 2049,
+      proto  => 'udp',
+      source => "${microk8s::ipv4_address_cidr}",
+      action => 'accept',
+    }
+  }
+  else {
+    ufw::allow { 'allow-nfs-from-trusted':
+      port => '2049'
+      from => "${microk8s::ipv4_address_cidr}",
+    }
   }
 }
 
