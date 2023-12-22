@@ -3,31 +3,31 @@ class microk8s::nfs (
 ){
   Apt::Source <| |> -> Package <| |>
 
-  package { 'nfs-kernel-server':
-    ensure  => latest,
-  }
+  #package { 'nfs-kernel-server':
+  #  ensure  => latest,
+  #}
 
-  package { 'nfs-common':
-    ensure  => latest,
-  }
+  #package { 'nfs-common':
+  #  ensure  => latest,
+  #}
 
-  file {"${nfs_shared_folder}":
-    ensure  => directory,
-    mode    => '777',
-    owner   => 'nobody',
-    group   => 'nogroup',
-  }
+  #file {"${nfs_shared_folder}":
+  #  ensure  => directory,
+  #  mode    => '777',
+  #  owner   => 'nobody',
+  #  group   => 'nogroup',
+  #}
 
-  exec {'export_nfs':
-    command => "/usr/bin/grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || /usr/bin/echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
-    require => Package['nfs-kernel-server'],
-  }
+  #exec {'export_nfs':
+  #  command => "/usr/bin/grep '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' /etc/exports || /usr/bin/echo '${nfs_shared_folder}  ${microk8s::ipv4_address_cidr}(rw,sync,no_root_squash,no_subtree_check)' >> /etc/exports",
+  #  require => Package['nfs-kernel-server'],
+  #}
 
-  service {'nfs-kernel-server':
-    ensure => running,
-    enable  => true,
-    require => Package['nfs-kernel-server'],
-  }
+  #service {'nfs-kernel-server':
+  #  ensure => running,
+  #  enable  => true,
+  #  require => Package['nfs-kernel-server'],
+  #}
 
   if $enable_host_ufw == false {
     firewall { '000 allow nfs tcp access':
@@ -45,6 +45,8 @@ class microk8s::nfs (
     }
   }
   else {
+    class { 'ufw': }
+    
     ufw::allow { 'allow-nfs-from-trusted':
       port => '2049'
       from => "${microk8s::ipv4_address_cidr}",
