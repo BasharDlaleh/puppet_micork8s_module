@@ -58,8 +58,8 @@ class microk8s (
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
   $enable_host_ufw   = false,
-  $kubectl_user = 'ubuntu',
-  $kubectl_user_home = '/home/ubuntu',
+  $kubectl_user = 'vagrant',
+  $kubectl_user_home = '/home/vagrant',
 ){
 
   stage { 'host': }
