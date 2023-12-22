@@ -1,10 +1,6 @@
 # microk8s
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
+Welcome to my new module.
 
 ## Table of Contents
 
@@ -61,8 +57,9 @@ If you wish to customize the defaults you can pass them to the main class microk
 
 ```puppet
 class {'microk8s': 
-  $ipv4_address_cidr => '10.206.32.1/24',
-  $nodes = [{
+  ipv4_address_cidr => '10.206.32.1/24',
+  ipv6_address_cidr => 'fd42:81d2:b869:f61c::1/64',
+  nodes => [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
               'memory'       => '8GB',
@@ -87,13 +84,13 @@ class {'microk8s':
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
-  $local_nfs_storage => true,
-  $master_ip         => '10.206.32.100',
-  $master_name       => 'master',
-  $nfs_shared_folder => '/mnt/k8s_nfs_share',
-  $enable_host_ufw   = false,
-  $kubectl_user      = 'ubuntu',
-  $kubectl_user_home = '/home/ubuntu',
+  local_nfs_storage => true,
+  master_ip         => '10.206.32.100',
+  master_name       => 'master',
+  nfs_shared_folder => '/mnt/k8s_nfs_share',
+  enable_host_ufw   => false,
+  kubectl_user      => 'ubuntu',
+  kubectl_user_home => '/home/ubuntu',
 }
 ```
 

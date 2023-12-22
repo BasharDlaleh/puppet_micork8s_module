@@ -4,6 +4,8 @@
 #
 # @example
 #  class {'microk8s':
+#    ipv4_address_cidr => '10.206.32.1/24',
+#    ipv6_address_cidr => 'fd42:81d2:b869:f61c::1/64',
 #    nodes => [{
 #              'vm_name'      => 'master',
 #              'ipv4_address' => '10.206.32.100',
@@ -21,10 +23,13 @@
 #              'disk'         => '60GiB',
 #              'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
 #              }],
-#    $local_nfs_storage = true,
-#    $master_ip         = '10.206.32.100',
-#    $master_name       = 'master',
-#    $nfs_shared_folder = '/mnt/k8s_nfs_share',
+#     local_nfs_storage => true,
+#     master_ip         => '10.206.32.100',
+#     master_name       => 'master',
+#     nfs_shared_folder => '/mnt/k8s_nfs_share',
+#     enable_host_ufw   => true,
+#     kubectl_user      => 'ubuntu',
+#     kubectl_user_home => '/home/ubuntu',
 #  }
 class microk8s (
   $ipv4_address_cidr = '10.206.32.1/24',
