@@ -58,7 +58,7 @@ class microk8s (
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
   $enable_host_ufw   = false,
-  $kubectl_user = 'vagrant',
+  $kubectl_user      = 'vagrant',
   $kubectl_user_home = '/home/vagrant',
 ){
 
