@@ -84,6 +84,7 @@ class microk8s (
     master_ip         => $master_ip,
     local_nfs_storage => $local_nfs_storage,
     nfs_shared_folder => $nfs_shared_folder,
+    enable_host_ufw   => $enable_host_ufw,
     stage             => 'host',
   }
 }
