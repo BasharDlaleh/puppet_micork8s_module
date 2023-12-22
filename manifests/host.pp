@@ -39,6 +39,18 @@ class microk8s::host (
     require => File['/tmp/persist-iptables.sh']
   }
 
+  ufw::allow {'allow-ssh':
+    port => '22'
+  }
+
+  ufw::allow {'allow-http':
+    port => '80'
+  }
+
+  ufw::allow {'allow-https':
+    port => '443'
+  }
+
   if $local_nfs_storage {
     class {'microk8s::nfs':
       nfs_shared_folder => $nfs_shared_folder,

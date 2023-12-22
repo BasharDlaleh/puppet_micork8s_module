@@ -53,10 +53,11 @@ class microk8s (
               'disk'         => '60GiB',
               'passwd'       => '$1$SaltSalt$YhgRYajLPrYevs14poKBQ0',
               }],
-  $local_nfs_storage = true,
+  $local_nfs_storage = false,
   $master_ip         = '10.206.32.100',
   $master_name       = 'master',
   $nfs_shared_folder = '/mnt/k8s_nfs_share',
+  $enable_host_ufw   = true,
 ){
 
   stage { 'host': }
@@ -74,10 +75,10 @@ class microk8s (
     require => File['/tmp/lxd_init.yaml'],
   }
 
-  class {'microk8s::instances':
-    nodes             => $nodes,
-    master_name       => $master_name,
-  }
+  #class {'microk8s::instances':
+  #  nodes             => $nodes,
+  #  master_name       => $master_name,
+  #}
 
   class {'microk8s::host':
     master_ip         => $master_ip,
