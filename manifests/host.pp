@@ -76,7 +76,7 @@ class microk8s::host (
 
   exec {"configure-kubectl":
       #command => "/snap/bin/lxc exec ${master_name} -- sudo microk8s config > ${kubectl_user_home}/.kube/config 2>&1",
-      command => "echo 'kubectlconfig' > ${kubectl_user_home}/.kube/config 2>&1",
+      command => "/usr/bin/echo 'kubectlconfig' > ${kubectl_user_home}/.kube/config 2>&1",
       require => File["${kubectl_home_user}/.kube"],
   }  
 }
