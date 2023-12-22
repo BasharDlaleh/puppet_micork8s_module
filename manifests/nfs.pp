@@ -1,5 +1,6 @@
 class microk8s::nfs (
   $nfs_shared_folder = '',
+  $enable_host_ufw   = false,
 ){
   Apt::Source <| |> -> Package <| |>
 
