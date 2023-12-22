@@ -20,6 +20,7 @@ define microk8s::vm (
         cpu          => $cpu,
         disk         => $disk,
         passwd       => $passwd,
+        vm_name      => $vm_name,
     }),
   }
 

@@ -38,5 +38,5 @@ devices:
     path: /
     pool: default
     type: disk
-name: master
+name: <%= $vm_name %>
 used_by: []
