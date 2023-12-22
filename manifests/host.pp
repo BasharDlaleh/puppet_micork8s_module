@@ -1,5 +1,6 @@
 class microk8s::host (
   $master_ip         = '10.206.32.100',
+  $master_name       = 'master',
   $local_nfs_storage = false,
   $nfs_shared_folder = '',
   $enable_host_ufw   = false,
