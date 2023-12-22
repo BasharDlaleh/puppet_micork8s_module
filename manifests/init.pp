@@ -28,9 +28,11 @@
 #  }
 class microk8s (
   $ipv4_address_cidr = '10.206.32.1/24',
+  $ipv6_address_cidr = 'fd42:81d2:b869:f61c::1/64',
   $nodes = [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
+              'ipv6_address' => 'fd42:81d2:b869:f61c:216:3eff:fe4e:a800',
               'memory'       => '8GB',
               'cpu'          => '2',
               'disk'         => '60GiB',
@@ -40,6 +42,7 @@ class microk8s (
              {
               'vm_name'      => 'worker1',
               'ipv4_address' => '10.206.32.101',
+              'ipv6_address' => 'fd42:81d2:b869:f61c:216:3eff:fea4:6d85',
               'memory'       => '8GB',
               'cpu'          => '2',
               'disk'         => '60GiB',
@@ -48,6 +51,7 @@ class microk8s (
               {
               'vm_name'      => 'worker2',
               'ipv4_address' => '10.206.32.102',
+              'ipv6_address' => 'fd42:81d2:b869:f61c:216:3eff:fe54:c89a',
               'memory'       => '8GB',
               'cpu'          => '2',
               'disk'         => '60GiB',
@@ -69,6 +73,7 @@ class microk8s (
     ensure  => file,
     content => epp('microk8s/lxd_init.yaml.epp',{
         ipv4_address_cidr => $ipv4_address_cidr,
+        ipv6_address_cidr => $ipv6_address_cidr,
     }),
   }
 
