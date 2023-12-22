@@ -40,9 +40,9 @@ class microk8s::host (
     require => File['/tmp/persist-iptables.sh']
   }
 
+  class { 'ufw': }
+  
   if $enable_host_ufw {
-    class { 'ufw': }
-
     ufw::allow {'allow-ssh':
       port => '22'
     }

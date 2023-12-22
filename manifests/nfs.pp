@@ -46,8 +46,6 @@ class microk8s::nfs (
     }
   }
   else {
-    class { 'ufw': }
-    
     ufw::allow { 'allow-nfs-from-trusted':
       port => '2049',
       from => "${microk8s::ipv4_address_cidr}",
