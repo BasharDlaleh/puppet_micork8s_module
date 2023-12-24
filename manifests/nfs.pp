@@ -25,7 +25,7 @@ class microk8s::nfs (
   }
 
   exec {'exportfs':
-    command => "exportfs -a",
+    command => "/usr/sbin/exportfs -a",
     require => Exec['export_nfs'],
   }
 
