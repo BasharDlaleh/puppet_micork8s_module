@@ -79,8 +79,8 @@ class microk8s (
   file {'/tmp/lxd_init.yaml':
     ensure  => file,
     content => epp('microk8s/lxd_init.yaml.epp',{
-        ipv4_address_cidr => $ipv4_address_cidr,
-        ipv6_address_cidr => $ipv6_address_cidr,
+        ipv4_address_cidr => $ipv4_net_addr,
+        ipv6_address_cidr => $ipv6_net_addr,
     }),
   }
 
