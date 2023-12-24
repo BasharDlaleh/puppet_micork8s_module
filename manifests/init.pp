@@ -74,23 +74,23 @@ class microk8s (
   stage { 'host': }
   Stage['main'] -> Stage['host']
 
-  #file {'/tmp/lxd_init.yaml':
-  #  ensure  => file,
-  #  content => epp('microk8s/lxd_init.yaml.epp',{
-  #      ipv4_address_cidr => $ipv4_address_cidr,
-  #      ipv6_address_cidr => $ipv6_address_cidr,
-  #  }),
-  #}
+  file {'/tmp/lxd_init.yaml':
+    ensure  => file,
+    content => epp('microk8s/lxd_init.yaml.epp',{
+        ipv4_address_cidr => $ipv4_address_cidr,
+        ipv6_address_cidr => $ipv6_address_cidr,
+    }),
+  }
 
-  #exec {'init':
-  #  command => '/snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
-  #  require => File['/tmp/lxd_init.yaml'],
-  #}
+  exec {'init':
+    command => '/snap/bin/lxd init --preseed < /tmp/lxd_init.yaml',
+    require => File['/tmp/lxd_init.yaml'],
+  }
 
-  #class {'microk8s::instances':
-  #  nodes             => $nodes,
-  #  master_name       => $master_name,
-  #}
+  class {'microk8s::instances':
+    nodes             => $nodes,
+    master_name       => $master_name,
+  }
 
   class {'microk8s::host':
     master_ip         => $master_ip,
