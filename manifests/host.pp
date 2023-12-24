@@ -75,7 +75,7 @@ class microk8s::host (
         'ensure'         => 'present',
         'action'         => 'allow',
         'direction'      => 'in',
-        'interface_in'      => 'lxdbr0',
+        'interface'   => 'lxdbr0',
 
         },
       },
