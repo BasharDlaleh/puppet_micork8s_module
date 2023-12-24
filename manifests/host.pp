@@ -60,7 +60,7 @@ class microk8s::host (
     }
 
     ufw::allow {'allow-lxdbr0':
-      port      => 'Anywhere',
+      port      => '',
       interface => 'lxdbr0',
     }
 
