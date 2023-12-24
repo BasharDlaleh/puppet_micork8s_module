@@ -4,7 +4,7 @@
 #
 # @example
 #  class {'microk8s':
-#    ipv4_address_cidr => '10.206.32.1/24',
+#    ipv4_address_cidr => '10.206.32.0/24',
 #    ipv6_address_cidr => 'fd42:81d2:b869:f61c::1/64',
 #    nodes => [{
 #              'vm_name'      => 'master',
@@ -32,7 +32,7 @@
 #     kubectl_user_home => '/home/ubuntu',
 #  }
 class microk8s (
-  $ipv4_address_cidr = '10.206.32.1/24',
+  $ipv4_address_cidr = '10.206.32.0/24',
   $ipv6_address_cidr = 'fd42:81d2:b869:f61c::1/64',
   $nodes = [{
               'vm_name'      => 'master',
