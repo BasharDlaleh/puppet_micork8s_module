@@ -44,33 +44,56 @@ class microk8s::host (
   #}
 
   # allow http, https, ssh in ufw
-  class { 'ufw': }
   
   if $enable_host_ufw {
-    ufw::allow {'allow-ssh':
-      port => '22'
+    class {'ufw':
+      manage_package           => true,
+      package_name             => 'ufw',
+      manage_service           => true,
+      service_name             => 'ufw',
+      service_ensure           => 'running',
+      rules                    => {
+        'allow ssh' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'to_ports_app'   => 22,
+        'proto'          => 'tcp'
+        },
+        'allow http' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'to_ports_app'   => 80,
+        'proto'          => 'tcp'
+        },
+        'allow https' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'to_ports_app'   => 443,
+        'proto'          => 'tcp'
+        },
+        'allow in on lxdbr0' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'direction'      => 'in',
+        'interface_in'      => 'lxdbr0',
+
+        },
+      },
+      routes                   => {
+        'route allow in on lxdbr0' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'interface_in'   => 'lxdbr0',
+        },
+        'route allow out on lxdbr0' => {
+        'ensure'         => 'present',
+        'action'         => 'allow',
+        'interface_out'  => 'lxdbr0',
+        },
+      },
+      purge_unmanaged_rules    => true,
+      purge_unmanaged_routes   => true,
     }
-
-    ufw::allow {'allow-http':
-      port => '80'
-    }
-
-    ufw::allow {'allow-https':
-      port => '443'
-    }
-
-    ufw::allow {'allow-lxdbr0':
-      port      => 'anywhere',
-      interface => 'lxdbr0',
-    }
-
-    #ufw::route {'route-allow-in-lxdbr0':
-    #  interface => 'lxdbr0',
-    #}
-
-    #ufw::allow {'route-allow-out-lxdbr0':
-    #  interface => 'lxdbr0',
-    #}
   } 
 
   # configure nfs storage
