@@ -4,9 +4,9 @@
 #
 # @example
 #  class {'microk8s':
-#    ipv4_address_cidr => '10.206.32.0/24',
-#    ipv4_net_addr     => '10.206.32.1/24',
-#    ipv6_net_addr     => 'fd42:81d2:b869:f61c::1/64',
+#    ipv4_address_cidr   => '10.206.32.0/24',
+#    lxdbr0_ipv4_address => '10.206.32.1/24',
+#    lxdbr0_ipv6_address => 'fd42:81d2:b869:f61c::1/64',
 #    nodes => [{
 #              'vm_name'      => 'master',
 #              'ipv4_address' => '10.206.32.100',
@@ -34,8 +34,8 @@
 #  }
 class microk8s (
   $ipv4_address_cidr = '10.206.32.0/24',
-  $ipv4_net_addr     = '10.206.32.1/24',
-  $ipv6_net_addr     = 'fd42:81d2:b869:f61c::1/64',
+  $lxdbr0_ipv4_address = '10.206.32.1/24',
+  $lxdbr0_ipv6_address  = 'fd42:81d2:b869:f61c::1/64',
   $nodes = [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
@@ -79,8 +79,8 @@ class microk8s (
   file {'/tmp/lxd_init.yaml':
     ensure  => file,
     content => epp('microk8s/lxd_init.yaml.epp',{
-        ipv4_net_addr => $ipv4_net_addr,
-        ipv6_net_addr => $ipv6_net_addr,
+        lxdbr0_ipv4_address => $lxdbr0_ipv4_address,
+        lxdbr0_ipv6_address => $lxdbr0_ipv6_address,
     }),
   }
 

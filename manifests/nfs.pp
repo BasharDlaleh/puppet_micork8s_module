@@ -24,6 +24,11 @@ class microk8s::nfs (
     require => Package['nfs-kernel-server'],
   }
 
+  exec {'exportfs':
+    command => "exportfs -a",
+    require => Exec['export_nfs'],
+  }
+
   service {'nfs-kernel-server':
     ensure => running,
     enable  => true,
