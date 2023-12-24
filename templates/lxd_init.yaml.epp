@@ -1,9 +1,9 @@
 config: {}
 networks:
 - config:
-    ipv4.address: <%= $ipv4_address_cidr %>
+    ipv4.address: <%= $ipv4_net_addr %>
     ipv4.nat: "true"
-    ipv6.address: <%= $ipv6_address_cidr %>
+    ipv6.address: <%= $ipv6_net_addr %>
     ipv6.dhcp.stateful: "true"
   description: ""
   name: lxdbr0

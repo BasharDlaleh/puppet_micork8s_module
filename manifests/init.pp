@@ -5,7 +5,8 @@
 # @example
 #  class {'microk8s':
 #    ipv4_address_cidr => '10.206.32.0/24',
-#    ipv6_address_cidr => 'fd42:81d2:b869:f61c::1/64',
+#    ipv4_net_addr     => '10.206.32.1/24',
+#    ipv6_net_addr     => 'fd42:81d2:b869:f61c::1/64',
 #    nodes => [{
 #              'vm_name'      => 'master',
 #              'ipv4_address' => '10.206.32.100',
@@ -33,7 +34,8 @@
 #  }
 class microk8s (
   $ipv4_address_cidr = '10.206.32.0/24',
-  $ipv6_address_cidr = 'fd42:81d2:b869:f61c::1/64',
+  $ipv4_net_addr     = '10.206.32.1/24',
+  $ipv6_net_addr     = 'fd42:81d2:b869:f61c::1/64',
   $nodes = [{
               'vm_name'      => 'master',
               'ipv4_address' => '10.206.32.100',
